@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jesimiel Revival Ministries | Worship, Community, Hope</title>
+    <meta name="description" content="Jesimiel Revival Ministries is a welcoming church family committed to worship, service, and hope." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-bar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">✞</span>
+          <span>
+            <strong>Jesimiel Revival</strong>
+            <small>Ministries</small>
+          </span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="nav-links">
+          <a href="index.html" class="active">Home</a>
+          <a href="about.html">About</a>
+          <a href="events.html">Events</a>
+          <a href="give.html">Give</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+          <p class="eyebrow">Come as you are</p>
+          <h1>Growing in faith, serving with love.</h1>
+          <p>Join us for inspiring worship, thoughtful teaching, and a community that walks with you through every season.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="contact.html">Visit Us This Sunday</a>
+            <a class="btn btn-secondary" href="events.html">Explore Upcoming Events</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section intro-strip">
+        <div class="container grid-3">
+          <div class="info-card">
+            <h3>Sunday Service</h3>
+            <p>09:00 AM</p>
+          </div>
+          <div class="info-card">
+            <h3>Location</h3>
+            <p>Balsam St, Zakariyya Park</p>
+          </div>
+          <div class="info-card">
+            <h3>Kids & Youth</h3>
+            <p>Programs for every age</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid-2 align-center">
+          <div>
+            <p class="eyebrow">Welcome to our church</p>
+            <h2>We exist to help people know God and make Him known.</h2>
+            <p>Jesimiel Revival Ministries is a place where faith is lived out through worship, prayer, discipleship, and everyday acts of kindness.</p>
+            <p>Whether you are new to faith or looking for a deeper community, you will find a warm welcome here.</p>
+            <a class="btn btn-primary" href="about.html">Learn More About Us</a>
+          </div>
+          <div class="card image-card">
+            <img src="../images/hero/cross.jpg" alt="Church worship service" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">This week at Jesimiel Revival Ministries</p>
+            <h2>Faith-filled experiences for every season</h2>
+          </div>
+          <div class="grid-3">
+            <article class="card feature-card">
+              <h3>Sunday Worship</h3>
+              <p>Live music, prayer, and a message designed to encourage and challenge you.</p>
+            </article>
+            <article class="card feature-card">
+              <h3>Community Groups</h3>
+              <p>Small groups that build friendship, support, and spiritual growth.</p>
+            </article>
+            <article class="card feature-card">
+              <h3>Serve Together</h3>
+              <p>Join a team and make a difference in our city and around the world.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid-2 align-center">
+          <div class="card image-card">
+            <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80" alt="Pastor preaching" />
+          </div>
+          <div>
+            <p class="eyebrow">Latest message</p>
+            <h2>Hope that remains when life feels uncertain.</h2>
+            <p>In our newest sermon series, we explore how faithful hope can shape our hearts and guide our daily choices.</p>
+            <a class="btn btn-secondary" href="sermons.html">Watch the Latest Sermon</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Daily Bible Verse -->
+      <section class="section section-alt verse-section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Word for today</p>
+            <h2>Daily Scripture</h2>
+          </div>
+          <div class="verse-card card" id="verse-container">
+            <div class="verse-loading" id="verse-loading" style="display: none;">
+              <div class="verse-spinner"></div>
+              <p>Loading today's verse…</p>
+            </div>
+            <blockquote class="verse-text" id="verse-text" hidden></blockquote>
+            <p class="verse-ref" id="verse-ref" hidden></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <div>
+          <h3>Jesimiel Revival Ministries</h3>
+          <p>Creating a community where faith, hope, and love are lived out daily.</p>
+        </div>
+        <div>
+          <h4>Visit</h4>
+          <p>Balsam St<br />Zakariyya Park, 1829</p>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <p><a href="mailto:hello@jesimielrevival.org">hello@jesimielrevival.org</a></p>
+          <p><a href="tel:+15551234567">083 390 0516</a></p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© <span class="year"></span> Jesimiel Revival Ministries.</p>
+        <a href="admin.html" class="admin-footer-link">Admin</a>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/bible-verse.js"></script>
+  </body>
+</html>

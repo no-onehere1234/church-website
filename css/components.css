@@ -1,0 +1,15 @@
+﻿.card:hover { transform: translateY(-2px); transition: 0.2s ease; }
+
+/* btn-secondary variant for light section backgrounds */
+.section .btn-secondary,
+.page-hero .btn-secondary {
+  background: transparent;
+  color: var(--primary-dark);
+  border: 2px solid var(--primary);
+}
+
+.section .btn-secondary:hover,
+.page-hero .btn-secondary:hover {
+  background: var(--primary);
+  color: var(--white);
+}

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Jesimiel Revival Ministries</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <style>
+      /* ── Login screen ───────────────────────────────────── */
+      .admin-login-wrap {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #0b6650 0%, #0f8a6d 60%, #ffb703 100%);
+      }
+
+      .login-card {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+        padding: 3rem 2.5rem;
+        width: min(420px, calc(100% - 2rem));
+        text-align: center;
+      }
+
+      .login-card .brand-mark {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+        margin: 0 auto 1.2rem;
+      }
+
+      .login-card h1 {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+        color: var(--primary-dark);
+      }
+
+      .login-card p {
+        color: var(--muted);
+        margin-bottom: 1.8rem;
+        font-size: 0.95rem;
+      }
+
+      .login-card label {
+        display: grid;
+        gap: 0.35rem;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 1rem;
+      }
+
+      .login-card input[type="password"] {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        font: inherit;
+        font-size: 1rem;
+      }
+
+      .login-card input[type="password"]:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+        border-color: transparent;
+      }
+
+      .login-error {
+        color: #c0392b;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        min-height: 1.2em;
+      }
+
+      /* ── Admin shell ────────────────────────────────────── */
+      .admin-shell { display: none; }
+
+      .admin-topbar {
+        background: #0f1f1b;
+        color: #fff;
+        padding: 0.85rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .admin-topbar .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .admin-topbar .brand {
+        color: #fff;
+      }
+
+      .admin-topbar .brand small { color: rgba(255,255,255,0.6); }
+      .admin-topbar .brand-mark {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+      }
+
+      .admin-badge {
+        background: var(--accent);
+        color: #243447;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .btn-logout {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.25);
+        padding: 0.5rem 1.1rem;
+        border-radius: 999px;
+        font: inherit;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+      /* ── Admin body ─────────────────────────────────────── */
+      .admin-body { padding: 3rem 0 6rem; }
+
+      .admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .admin-header h2 { font-size: 1.6rem; }
+
+      /* ── Event form modal ───────────────────────────────── */
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 2000;
+        place-items: center;
+      }
+
+      .modal-backdrop.open { display: grid; }
+
+      .modal {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+        padding: 2.5rem;
+        width: min(520px, calc(100% - 2rem));
+        position: relative;
+      }
+
+      .modal h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-dark);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.4rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--muted);
+        line-height: 1;
+      }
+
+      .modal-close:hover { color: var(--text); }
+
+      .form-group {
+        display: grid;
+        gap: 0.35rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .form-group label {
+        font-weight: 600;
+        font-size: 0.92rem;
+        color: var(--text);
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
+        font: inherit;
+        font-size: 0.97rem;
+        transition: 0.15s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+        border-color: transparent;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-cancel {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 0.7rem 1.4rem;
+        border-radius: 999px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .btn-cancel:hover { background: var(--light); }
+
+      /* ── Events table ───────────────────────────────────── */
+      .events-table-wrap {
+        overflow-x: auto;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+      }
+
+      .events-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 0.95rem;
+      }
+
+      .events-table th {
+        background: linear-gradient(135deg, #0b6650, #0f8a6d);
+        color: #fff;
+        text-align: left;
+        padding: 1rem 1.2rem;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .events-table th:first-child { border-radius: 19px 0 0 0; }
+      .events-table th:last-child  { border-radius: 0 19px 0 0; }
+
+      .events-table td {
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+        color: var(--text);
+      }
+
+      .events-table tr:last-child td { border-bottom: none; }
+
+      .events-table tr:hover td { background: #fffdf8; }
+
+      .events-table .td-title { font-weight: 700; }
+      .events-table .td-date  { color: var(--primary-dark); font-weight: 600; white-space: nowrap; }
+      .events-table .td-desc  { color: var(--muted); max-width: 360px; }
+
+      .row-actions {
+        display: flex;
+        gap: 0.5rem;
+        white-space: nowrap;
+      }
+
+      .btn-edit {
+        background: linear-gradient(135deg, var(--primary), #0b7a5f);
+        color: #fff;
+        border: none;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .btn-edit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+      .btn-delete {
+        background: #fdecea;
+        color: #c0392b;
+        border: 1px solid #f5c6c2;
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .btn-delete:hover { background: #c0392b; color: #fff; transform: translateY(-1px); }
+
+      /* ── Toast notification ─────────────────────────────── */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--primary-dark);
+        color: #fff;
+        padding: 0.85rem 1.4rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast.error { background: #c0392b; }
+
+      /* ── Loading / empty states ─────────────────────────── */
+      .table-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--muted);
+      }
+
+      .table-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 0.8rem;
+      }
+
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* ── Responsive ─────────────────────────────────────── */
+      @media (max-width: 600px) {
+        .events-table .td-desc { display: none; }
+        .modal { padding: 1.8rem 1.4rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ════════════════════════════════════════════════════
+         LOGIN SCREEN
+    ════════════════════════════════════════════════════ -->
+    <div class="admin-login-wrap" id="login-screen">
+      <div class="login-card">
+        <span class="brand-mark" style="display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0f8a6d,#ffb703);color:#fff;font-size:1.4rem;margin:0 auto 1.2rem;">✞</span>
+        <h1>Admin Login</h1>
+        <p>Jesimiel Revival Ministries</p>
+        <form id="login-form" novalidate>
+          <label>
+            Password
+            <input type="password" id="password-input" placeholder="Enter admin password" autocomplete="current-password" required />
+          </label>
+          <p class="login-error" id="login-error" aria-live="polite"></p>
+          <button class="btn btn-primary" type="submit" style="width:100%;margin-top:0.5rem;">Sign In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         ADMIN SHELL (hidden until logged in)
+    ════════════════════════════════════════════════════ -->
+    <div class="admin-shell" id="admin-shell">
+
+      <!-- Top bar -->
+      <header class="admin-topbar">
+        <div class="container">
+          <a class="brand" href="index.html" style="display:flex;align-items:center;gap:0.75rem;font-weight:700;">
+            <span class="brand-mark" style="display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0f8a6d,#ffb703);color:#fff;font-size:1.1rem;">✞</span>
+            <span>
+              <strong>Jesimiel Revival</strong>
+              <small>Ministries</small>
+            </span>
+          </a>
+          <div class="topbar-right">
+            <span class="admin-badge">Admin Panel</span>
+            <a href="index.html" style="color:rgba(255,255,255,0.75);font-size:0.88rem;font-weight:600;">← View site</a>
+            <button class="btn-logout" id="logout-btn">Log out</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Body -->
+      <main class="admin-body">
+        <div class="container">
+
+          <div class="admin-header">
+            <div>
+              <h2>Manage Events</h2>
+              <p style="color:var(--muted);margin-top:0.2rem;">Add, edit, or remove events shown on the website.</p>
+            </div>
+            <button class="btn btn-primary" id="add-event-btn">+ Add Event</button>
+          </div>
+
+          <!-- Events table -->
+          <div class="events-table-wrap">
+            <table class="events-table" aria-label="Church events">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Date / Time</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="events-tbody">
+                <tr>
+                  <td colspan="4">
+                    <div class="table-state">
+                      <div class="table-spinner"></div>
+                      <p>Loading events…</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         ADD / EDIT MODAL
+    ════════════════════════════════════════════════════ -->
+    <div class="modal-backdrop" id="event-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal">
+        <button class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
+        <h3 id="modal-title">Add Event</h3>
+        <form id="event-form" novalidate>
+          <input type="hidden" id="event-id" />
+          <div class="form-group">
+            <label for="event-title">Event Title <span style="color:#c0392b">*</span></label>
+            <input type="text" id="event-title" placeholder="e.g. Sunday Worship" required />
+          </div>
+          <div class="form-group">
+            <label for="event-date">Date &amp; Time <span style="color:#c0392b">*</span></label>
+            <input type="text" id="event-date" placeholder="e.g. Every Sunday • 09:00 AM" required />
+          </div>
+          <div class="form-group">
+            <label for="event-description">Description <span style="color:#c0392b">*</span></label>
+            <textarea id="event-description" rows="4" placeholder="Brief description of the event…" required></textarea>
+          </div>
+          <p class="login-error" id="form-error" aria-live="polite"></p>
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" id="form-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="form-submit-btn">Save Event</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         DELETE CONFIRM MODAL
+    ════════════════════════════════════════════════════ -->
+    <div class="modal-backdrop" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+      <div class="modal" style="max-width:420px;text-align:center;">
+        <h3 id="delete-modal-title" style="margin-bottom:0.6rem;">Delete Event?</h3>
+        <p style="color:var(--muted);margin-bottom:1.8rem;" id="delete-modal-msg">This will permanently remove the event from the website.</p>
+        <div class="form-actions" style="justify-content:center;">
+          <button type="button" class="btn-cancel" id="delete-cancel-btn">Cancel</button>
+          <button type="button" class="btn btn-primary" id="delete-confirm-btn" style="background:linear-gradient(135deg,#c0392b,#e74c3c);">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module">
+      import { getEvents, addEvent, updateEvent, deleteEvent } from './js/firebase.js';
+
+      /* ── Constants ──────────────────────────────────────── */
+      const ADMIN_PASSWORD = 'Password123';
+      const SESSION_KEY    = 'jrm_admin_auth';
+
+      /* ── Elements ───────────────────────────────────────── */
+      const loginScreen   = document.getElementById('login-screen');
+      const adminShell    = document.getElementById('admin-shell');
+      const loginForm     = document.getElementById('login-form');
+      const passwordInput = document.getElementById('password-input');
+      const loginError    = document.getElementById('login-error');
+      const logoutBtn     = document.getElementById('logout-btn');
+
+      const tbody         = document.getElementById('events-tbody');
+      const addEventBtn   = document.getElementById('add-event-btn');
+
+      const eventModal    = document.getElementById('event-modal');
+      const modalTitle    = document.getElementById('modal-title');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+      const formCancelBtn = document.getElementById('form-cancel-btn');
+      const eventForm     = document.getElementById('event-form');
+      const eventIdInput  = document.getElementById('event-id');
+      const titleInput    = document.getElementById('event-title');
+      const dateInput     = document.getElementById('event-date');
+      const descInput     = document.getElementById('event-description');
+      const formError     = document.getElementById('form-error');
+      const formSubmitBtn = document.getElementById('form-submit-btn');
+
+      const deleteModal      = document.getElementById('delete-modal');
+      const deleteModalMsg   = document.getElementById('delete-modal-msg');
+      const deleteCancelBtn  = document.getElementById('delete-cancel-btn');
+      const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+
+      const toastEl = document.getElementById('toast');
+
+      /* ── Auth ───────────────────────────────────────────── */
+      function isLoggedIn() {
+        return sessionStorage.getItem(SESSION_KEY) === '1';
+      }
+
+      function showAdmin() {
+        loginScreen.style.display = 'none';
+        adminShell.style.display  = 'block';
+        loadEvents();
+      }
+
+      function showLogin() {
+        sessionStorage.removeItem(SESSION_KEY);
+        loginScreen.style.display = 'grid';
+        adminShell.style.display  = 'none';
+        passwordInput.value = '';
+        loginError.textContent   = '';
+      }
+
+      // Check session on load
+      if (isLoggedIn()) {
+        showAdmin();
+      }
+
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (passwordInput.value === ADMIN_PASSWORD) {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          loginError.textContent = '';
+          showAdmin();
+        } else {
+          loginError.textContent = 'Incorrect password. Please try again.';
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      });
+
+      logoutBtn.addEventListener('click', showLogin);
+
+      /* ── Toast ──────────────────────────────────────────── */
+      let toastTimer;
+      function showToast(msg, isError = false) {
+        clearTimeout(toastTimer);
+        toastEl.textContent = msg;
+        toastEl.classList.toggle('error', isError);
+        toastEl.classList.add('show');
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+      }
+
+      /* ── Load & render events ───────────────────────────── */
+      async function loadEvents() {
+        tbody.innerHTML = `
+          <tr><td colspan="4">
+            <div class="table-state">
+              <div class="table-spinner"></div>
+              <p>Loading events…</p>
+            </div>
+          </td></tr>`;
+
+        try {
+          const events = await getEvents();
+
+          if (events.length === 0) {
+            tbody.innerHTML = `
+              <tr><td colspan="4">
+                <div class="table-state"><p>No events yet. Click <strong>+ Add Event</strong> to create one.</p></div>
+              </td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = events.map((ev) => `
+            <tr data-id="${ev.id}">
+              <td class="td-title">${escHtml(ev.title)}</td>
+              <td class="td-date">${escHtml(ev.date)}</td>
+              <td class="td-desc">${escHtml(ev.description)}</td>
+              <td>
+                <div class="row-actions">
+                  <button class="btn-edit"   data-action="edit"   data-id="${ev.id}">Edit</button>
+                  <button class="btn-delete" data-action="delete" data-id="${ev.id}" data-title="${escHtml(ev.title)}">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `).join('');
+
+        } catch (err) {
+          console.error(err);
+          tbody.innerHTML = `
+            <tr><td colspan="4">
+              <div class="table-state"><p style="color:#c0392b">Failed to load events. Check your connection and try again.</p></div>
+            </td></tr>`;
+          showToast('Could not load events.', true);
+        }
+      }
+
+      /* ── Table click delegation ─────────────────────────── */
+      tbody.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+        const id     = btn.dataset.id;
+
+        if (action === 'edit') {
+          const row   = btn.closest('tr');
+          const cells = row.querySelectorAll('td');
+          openEditModal(
+            id,
+            cells[0].textContent,
+            cells[1].textContent,
+            cells[2].textContent
+          );
+        }
+
+        if (action === 'delete') {
+          openDeleteModal(id, btn.dataset.title);
+        }
+      });
+
+      /* ── Add / Edit modal ───────────────────────────────── */
+      function openAddModal() {
+        modalTitle.textContent    = 'Add Event';
+        formSubmitBtn.textContent = 'Add Event';
+        eventIdInput.value        = '';
+        eventForm.reset();
+        formError.textContent     = '';
+        eventModal.classList.add('open');
+        titleInput.focus();
+      }
+
+      function openEditModal(id, title, date, desc) {
+        modalTitle.textContent    = 'Edit Event';
+        formSubmitBtn.textContent = 'Save Changes';
+        eventIdInput.value        = id;
+        titleInput.value          = title;
+        dateInput.value           = date;
+        descInput.value           = desc;
+        formError.textContent     = '';
+        eventModal.classList.add('open');
+        titleInput.focus();
+      }
+
+      function closeEventModal() {
+        eventModal.classList.remove('open');
+      }
+
+      addEventBtn.addEventListener('click',   openAddModal);
+      modalCloseBtn.addEventListener('click', closeEventModal);
+      formCancelBtn.addEventListener('click', closeEventModal);
+      eventModal.addEventListener('click', (e) => {
+        if (e.target === eventModal) closeEventModal();
+      });
+
+      eventForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formError.textContent = '';
+
+        const data = {
+          title:       titleInput.value.trim(),
+          date:        dateInput.value.trim(),
+          description: descInput.value.trim(),
+        };
+
+        if (!data.title || !data.date || !data.description) {
+          formError.textContent = 'All fields are required.';
+          return;
+        }
+
+        formSubmitBtn.disabled     = true;
+        formSubmitBtn.textContent  = 'Saving…';
+
+        try {
+          const id = eventIdInput.value;
+          if (id) {
+            await updateEvent(id, data);
+            showToast('Event updated successfully.');
+          } else {
+            await addEvent(data);
+            showToast('Event added successfully.');
+          }
+          closeEventModal();
+          await loadEvents();
+        } catch (err) {
+          console.error(err);
+          formError.textContent = 'Something went wrong. Please try again.';
+          showToast('Save failed.', true);
+        } finally {
+          formSubmitBtn.disabled    = false;
+          formSubmitBtn.textContent = eventIdInput.value ? 'Save Changes' : 'Add Event';
+        }
+      });
+
+      /* ── Delete modal ───────────────────────────────────── */
+      let pendingDeleteId = null;
+
+      function openDeleteModal(id, title) {
+        pendingDeleteId          = id;
+        deleteModalMsg.textContent = `"${title}" will be permanently removed from the website.`;
+        deleteModal.classList.add('open');
+        deleteConfirmBtn.focus();
+      }
+
+      function closeDeleteModal() {
+        deleteModal.classList.remove('open');
+        pendingDeleteId = null;
+      }
+
+      deleteCancelBtn.addEventListener('click', closeDeleteModal);
+      deleteModal.addEventListener('click', (e) => {
+        if (e.target === deleteModal) closeDeleteModal();
+      });
+
+      deleteConfirmBtn.addEventListener('click', async () => {
+        if (!pendingDeleteId) return;
+        deleteConfirmBtn.disabled    = true;
+        deleteConfirmBtn.textContent = 'Deleting…';
+
+        try {
+          await deleteEvent(pendingDeleteId);
+          showToast('Event deleted.');
+          closeDeleteModal();
+          await loadEvents();
+        } catch (err) {
+          console.error(err);
+          showToast('Delete failed. Try again.', true);
+        } finally {
+          deleteConfirmBtn.disabled    = false;
+          deleteConfirmBtn.textContent = 'Yes, Delete';
+        }
+      });
+
+      /* ── Close modals on Escape ─────────────────────────── */
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeEventModal();
+          closeDeleteModal();
+        }
+      });
+
+      /* ── Utility ────────────────────────────────────────── */
+      function escHtml(str) {
+        return String(str ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+    </script>
+  </body>
+</html>
